@@ -1,31 +1,37 @@
-# TODO: Add comments and documentation
+# https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher
 
 from math import ceil
 
-alphabet = input("Alphabet (default: ABCDEFGHIJKLMNOPQRSTUVWXYZ): ").upper()
-key = input("Key: ").upper()
+alphabet = input("Alphabet (default: ABCDEFGHIJKLMNOPQRSTUVWXYZ): ").upper() # Original alphabet, to be modifiedwith the keyword
+key = input("Key: ").upper() # Keyword
 message = input("Message: ").upper()
 
 
+# Default alphabet
 if not alphabet:
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
-alphabet = list(dict.fromkeys(list(alphabet)).keys())
+# Transform str alphabet in list and save the original one in 'ini_alp'
+alphabet = list(alphabet)
 ini_alp = "".join(alphabet)
 
 
 if key:
-    key = list(dict.fromkeys(list(key)).keys())
+    key = list(key)
     key.reverse()
 
+    # Shift the alphabet
     for char in key:
         index = alphabet.index(char)
         alphabet.pop(index)
         alphabet.insert(0, char)
-    
-    key.reverse()
 
+    key.reverse()
+else:
+    raise KeyError('You must provide a key')
+
+# Create the cipher by shifting the alphabet
 cipher = []
 for char in alphabet:
     index = alphabet.index(char)
@@ -34,10 +40,11 @@ for char in alphabet:
 
 
 message = list(message)
-key_m = ("".join(key)) * ceil(len(message)/len(key))
-finale = ""
+key_m = ("".join(key)) * ceil(len(message)/len(key)) # Reapeted keyword
+final = ""
 
 
+# Enchript the message
 i = 0
 while i < len(message):
     if message[i] == " ":
@@ -51,12 +58,13 @@ while i < len(message):
 
         char = cipher[index1][index2]
 
-    finale += char
+    final += char
     i += 1
 
-print()
-print("-- OUTPUT --")
-print()
+
+# Print output
+
+print("\n-- OUTPUT --\n")
 
 for row in cipher:
     for char in row:
@@ -68,4 +76,4 @@ print("".join(key))
 print(ini_alp)
 print()
 
-print(finale)
+print(final)
